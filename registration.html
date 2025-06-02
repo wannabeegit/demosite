@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-fixed" style="background-image: url('background.jpg')">
+    <div class="flex min-h-screen w-full items-center justify-center bg-transparent p-4">
+        <div class="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
+            <h1 class="mb-8 text-center text-3xl font-bold text-gray-800">
+                Create Account
+            </h1>
+
+            <div class="mb-6">
+                <button
+                    id="googleSignUp"
+                    type="button"
+                    class="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                >
+                    <img
+                        src="https://www.google.com/favicon.ico"
+                        alt="Google"
+                        class="h-5 w-5"
+                    />
+                    Continue with Google
+                </button>
+            </div>
+
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="bg-white px-2 text-gray-500">
+                        Or continue with email
+                    </span>
+                </div>
+            </div>
+
+            <form id="signupForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        I am a...
+                    </label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button
+                            type="button"
+                            id="clientBtn"
+                            class="rounded-lg border border-gray-200 p-4 text-center transition-colors hover:border-gray-300"
+                        >
+                            Client
+                        </button>
+                        <button
+                            type="button"
+                            id="jobSeekerBtn"
+                            class="rounded-lg border border-gray-200 p-4 text-center transition-colors hover:border-gray-300"
+                        >
+                            Job Seeker
+                        </button>
+                    </div>
+                    <input type="hidden" id="role" name="role" value="">
+                </div>
+
+                <div id="clientTypeField" class="space-y-2 hidden">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Type
+                    </label>
+                    <select
+                        name="type"
+                        id="type"
+                        class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-lg outline-none focus:border-[#357AFF] focus:ring-1 focus:ring-[#357AFF]"
+                    >
+                        <option value="">Select Type</option>
+                        <option value="CO">County Officer (CO)</option>
+                        <option value="RN">Registered Nurse (RN)</option>
+                        <option value="MO">Medical Officer (MO)</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Full Name
+                    </label>
+                    <input
+                        name="name"
+                        type="text"
+                        id="name"
+                        class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-lg outline-none focus:border-[#357AFF] focus:ring-1 focus:ring-[#357AFF]"
+                        placeholder="Enter your full name"
+                        required
+                    />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Email
+                    </label>
+                    <input
+                        name="email"
+                        type="email"
+                        id="email"
+                        class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-lg outline-none focus:border-[#357AFF] focus:ring-1 focus:ring-[#357AFF]"
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Password
+                    </label>
+                    <input
+                        name="password"
+                        type="password"
+                        id="password"
+                        class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-lg outline-none focus:border-[#357AFF] focus:ring-1 focus:ring-[#357AFF]"
+                        placeholder="Create a password"
+                        required
+                    />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Phone Number
+                    </label>
+                    <input
+                        name="phone"
+                        type="tel"
+                        id="phone"
+                        class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-lg outline-none focus:border-[#357AFF] focus:ring-1 focus:ring-[#357AFF]"
+                        placeholder="Enter your phone number"
+                        required
+                    />
+                </div>
+
+                <div id="errorMessage" class="hidden rounded-lg bg-red-50 p-3 text-sm text-red-500">
+                    <!-- Error message will appear here -->
+                </div>
+
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="w-full rounded-lg bg-[#357AFF] px-4 py-3 text-base font-medium text-white transition-colors hover:bg-[#2E69DE] focus:outline-none focus:ring-2 focus:ring-[#357AFF] focus:ring-offset-2"
+                >
+                    Create Account
+                </button>
+
+                <div class="space-y-2 text-center text-sm text-gray-600">
+                    <p>
+                        Already have an account? 
+                        <a
+                            href="signin.html"
+                            class="text-[#357AFF] hover:text-[#2E69DE]"
+                        >
+                            Sign in
+                        </a>
+                    </p>
+                    <p>
+                        <a
+                            href="/account/forgot-password"
+                            class="text-[#357AFF] hover:text-[#2E69DE]"
+                        >
+                            Forgot password?
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const signupForm = document.getElementById('signupForm');
+                    const googleSignUp = document.getElementById('googleSignUp');
+                    const errorMessage = document.getElementById('errorMessage');
+                    const submitBtn = document.getElementById('submitBtn');
+                    const clientBtn = document.getElementById('clientBtn');
+                    const jobSeekerBtn = document.getElementById('jobSeekerBtn');
+                    const roleInput = document.getElementById('role');
+                    const clientTypeField = document.getElementById('clientTypeField');
+                    const typeSelect = document.getElementById('type');
+
+                    // Role selection
+                    clientBtn.addEventListener('click', function() {
+                        roleInput.value = 'CLIENT';
+                        clientBtn.classList.add('border-[#357AFF]', 'bg-blue-50', 'text-[#357AFF]');
+                        jobSeekerBtn.classList.remove('border-[#357AFF]', 'bg-blue-50', 'text-[#357AFF]');
+                        clientTypeField.classList.remove('hidden');
+                    });
+
+                    jobSeekerBtn.addEventListener('click', function() {
+                        roleInput.value = 'JOB_SEEKER';
+                        jobSeekerBtn.classList.add('border-[#357AFF]', 'bg-blue-50', 'text-[#357AFF]');
+                        clientBtn.classList.remove('border-[#357AFF]', 'bg-blue-50', 'text-[#357AFF]');
+                        clientTypeField.classList.add('hidden');
+                    });
+
+                    // Form submission
+                    signupForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        errorMessage.classList.add('hidden');
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = 'Loading...';
+                        submitBtn.classList.add('opacity-50');
+
+                        // Validation
+                        const formData = {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value,
+                            password: document.getElementById('password').value,
+                            phone: document.getElementById('phone').value,
+                            role: roleInput.value,
+                            type: typeSelect.value
+                        };
+
+                        if (!formData.name || !formData.email || !formData.password || !formData.phone || !formData.role) {
+                            showError("Please fill in all required fields");
+                            return;
+                        }
+
+                        if (formData.role === 'CLIENT' && !formData.type) {
+                            showError("Please select a client type");
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch('http://localhost:3001/api/signup', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formData)
+                            });
+                            const data = await response.json();
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Registration failed');
+                            }
+                            alert('Registration successful! You can now log in.');
+                            window.location.href = 'signin.html';
+                        } catch (error) {
+                            showError(error.message);
+                        } finally {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Create Account';
+                            submitBtn.classList.remove('opacity-50');
+                        }
+                    });
+
+                    // Google sign up
+                    googleSignUp.addEventListener('click', function() {
+                        console.log('Google sign up clicked');
+                        showError("Google sign in failed. Please try again.");
+                    });
+
+                    function showError(message) {
+                        errorMessage.textContent = message;
+                        errorMessage.classList.remove('hidden');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Create Account';
+                        submitBtn.classList.remove('opacity-50');
+                    }
+                });
+            </script>
+</body>
+</html>

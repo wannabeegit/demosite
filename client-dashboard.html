@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Management Dashboard - CPD Request</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Mock useUser hook
+    const useUser = () => ({
+      data: { name: "John Doe" },
+      loading: false
+    });
+
+    // Mock in-memory data store
+    const initialTasks = [
+      {
+        id: "1",
+        title: "Sample Task",
+        description: "Complete project documentation",
+        budget: 500,
+        deadline: "2025-04-20",
+        status: "pending"
+      }
+    ];
+    const initialTransactions = [
+      { id: "1", amount: 500, date: "2025-04-18" }
+    ];
+    const initialMessages = [
+      { id: "1", title: "New Task Assigned", content: "You have a new task", read: false, date: "2025-04-18" },
+      { id: "2", title: "Task Completed", content: "Task completed successfully", read: true, date: "2025-04-17" }
+    ];
+
+    function MainComponent() {
+      const [activeTab, setActiveTab] = useState("overview");
+      const { data: user, loading: userLoading } = useUser();
+      const [tasks, setTasks] = useState(initialTasks);
+      const [transactions, setTransactions] = useState(initialTransactions);
+      const [messages, setMessages] = useState(initialMessages);
+      const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+      const [error, setError] = useState(null);
+
+      const [newTask, setNewTask] = useState({
+        title: "",
+        description: "",
+        budget: "",
+        deadline: ""
+      });
+
+      const handleNewTask = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        if (
+          !newTask.title ||
+          !newTask.description
+        ) {
+          setError("Please fill in all fields");
+          return;
+        }
+
+        try {
+          // Mock API response
+          const mockTask = {
+            id: String(tasks.length + 1),
+            ...newTask,
+            budget: Number(newTask.budget),
+            status: "pending"
+          };
+
+          setShowNewTaskModal(false);
+          setNewTask({ title: "", description: "", budget: "", deadline: "" });
+          setTasks([...tasks, mockTask]);
+        } catch (err) {
+          setError("Failed to create task. Please try again.");
+        }
+      };
+
+      if (userLoading) {
+        return (
+          <div className="flex h-screen items-center justify-center">
+            <div className="text-xl">Loading...</div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="flex flex-col md:flex-row">
+            <nav className="bg-white p-4 md:h-screen md:w-64 md:fixed">
+              <div className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-800">CPD Request</h1>
+                <p className="text-gray-600">{user?.name}</p>
+              </div>
+
+              <div className="space-y-2">
+                <button
+                  onClick={() => setActiveTab("overview")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "overview"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-home mr-2"></i> Overview
+                </button>
+                <button
+                  onClick={() => { setActiveTab("tasks"); window.setActiveTab('tasks'); }}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "tasks"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                  id="tasks-tab"
+                >
+                  <i className="fas fa-tasks mr-2"></i> Tasks
+                </button>
+                <button
+                  onClick={() => setActiveTab("transactions")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "transactions"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-history mr-2"></i> Transactions
+                </button>
+                <button
+                  onClick={() => setActiveTab("messages")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "messages"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-envelope mr-2"></i> Messages
+                </button>
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "settings"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-cog mr-2"></i> Settings
+                </button>
+              </div>
+
+              <div className="mt-auto pt-8">
+                <a
+                  href="/account/logout"
+                  className="flex items-center text-gray-700 hover:text-[#357AFF]"
+                >
+                  <i className="fas fa-sign-out-alt mr-2"></i> Sign Out
+                </a>
+              </div>
+            </nav>
+
+            <main className="flex-1 p-4 md:ml-64">
+              {activeTab === "tasks" ? (
+                <div id="tasks-content">
+                  <div className="mb-6 flex items-center justify-between">
+                    <h2 id="main-title" className="text-2xl font-bold text-gray-800">Tasks</h2>
+                    <button onClick={() => window.setShowNewTaskModal(true)} className="rounded-lg bg-[#357AFF] px-4 py-2 text-white hover:bg-[#2E69DE]" id="new-request-btn">
+                      <i className="fas fa-plus mr-2"></i> New Request
+                    </button>
+                  </div>
+                  <div id="new-task-modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4" style={{display: 'none'}}>
+                    <div className="w-full max-w-md rounded-xl bg-white p-6">
+                      <h3 className="mb-4 text-xl font-bold text-gray-800">Create New Request</h3>
+                      <form id="new-task-form" className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">CPD Provider</label>
+                          <select id="cpd-provider" name="cpdProvider" className="mt-1 w-full rounded-lg border border-gray-200 p-2">
+                            <option value="">Select a CPD Provider</option>
+                            <option value="amhlearn">amhlearn</option>
+                          </select>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" id="create-new-account" className="rounded border-gray-300" />
+                          <label htmlFor="create-new-account" className="text-sm text-gray-700">
+                            Create new account (Check this if you don't have an account with the provider)
+                          </label>
+                        </div>
+                        <div id="username-field">
+                          <label className="block text-sm font-medium text-gray-700">Provider Username</label>
+                          <input type="text" id="provider-username" name="providerUsername" className="mt-1 w-full rounded-lg border border-gray-200 p-2" />
+                          <p id="sample-username" className="mt-1 text-xs text-gray-500"></p>
+                        </div>
+                        <div id="password-field">
+                          <label className="block text-sm font-medium text-gray-700">Provider Password</label>
+                          <input type="password" id="provider-password" name="providerPassword" className="mt-1 w-full rounded-lg border border-gray-200 p-2" />
+                          <p id="sample-password" className="mt-1 text-xs text-gray-500"></p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Description</label>
+                          <p className="text-sm text-gray-500 mb-2">
+                            Enter your cpd provider details and any other instructions in the box below.
+                          </p>
+                          <textarea id="description" name="description" className="mt-1 w-full rounded-lg border border-gray-200 p-2" rows="3" placeholder="Example: Please help me complete my CPD points for this year. I need 20 points in total."></textarea>
+                        </div>
+                        <div id="error-message" className="rounded-lg bg-red-50 p-3 text-sm text-red-500" style={{display: 'none'}}></div>
+                        <div className="flex justify-end space-x-3">
+                          <button type="button" onClick={() => window.setShowNewTaskModal(false)} className="rounded-lg border border-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-50">Cancel</button>
+                          <button type="submit" className="rounded-lg bg-[#357AFF] px-4 py-2 text-white hover:bg-[#2E69DE]">Submit Request</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-6 flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                    </h2>
+                  </div>
+
+                  {activeTab === "overview" && (
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      <div className="rounded-xl bg-white p-6 shadow-lg">
+                        <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                          Active Tasks
+                        </h3>
+                        <p className="text-3xl font-bold text-[#357AFF]">
+                          {tasks.length}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-white p-6 shadow-lg">
+                        <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                          Total Spent
+                        </h3>
+                        <p className="text-3xl font-bold text-[#357AFF]">
+                          KES {transactions.reduce((acc, t) => acc + t.amount, 0)}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-white p-6 shadow-lg">
+                        <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                          Unread Messages
+                        </h3>
+                        <p className="text-3xl font-bold text-[#357AFF]">
+                          {messages.filter((m) => !m.read).length}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeTab === "transactions" && (
+                    <div className="rounded-xl bg-white p-6 shadow-lg">
+                      <div className="space-y-4">
+                        {transactions.map((transaction) => (
+                          <div
+                            key={transaction.id}
+                            className="flex items-center justify-between border-t border-gray-100 py-4"
+                          >
+                            <div>
+                              <h4 className="font-semibold text-gray-800">
+                                Transaction #{transaction.id}
+                              </h4>
+                              <p className="text-sm text-gray-500">
+                                Date: {transaction.date}
+                              </p>
+                            </div>
+                            <span className="font-semibold text-[#357AFF]">
+                              KES {transaction.amount}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {activeTab === "messages" && (
+                    <div className="rounded-xl bg-white p-6 shadow-lg">
+                      <div className="space-y-4">
+                        {messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className="flex items-start gap-4 border-b border-gray-100 py-4 last:border-0"
+                          >
+                            <div
+                              className={`h-2 w-2 rounded-full ${
+                                message.read ? "bg-gray-300" : "bg-[#357AFF]"
+                              }`}
+                            />
+                            <div>
+                              <h4 className="font-semibold text-gray-800">
+                                {message.title}
+                              </h4>
+                              <p className="text-gray-600">{message.content}</p>
+                              <span className="text-sm text-gray-500">
+                                {message.date}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {activeTab === "settings" && (
+                    <div className="rounded-xl bg-white p-6 shadow-lg">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                        Settings
+                      </h3>
+                      <p className="text-gray-600">Settings functionality not implemented.</p>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {showNewTaskModal && activeTab !== "tasks" && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+                  <div className="w-full max-w-md rounded-xl bg-white p-6">
+                    <h3 className="mb-4 text-xl font-bold text-gray-800">
+                      Create New Task
+                    </h3>
+                    <form onSubmit={handleNewTask} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Title
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          value={newTask.title}
+                          onChange={(e) =>
+                            setNewTask({ ...newTask, title: e.target.value })
+                          }
+                          className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Description
+                        </label>
+                        <textarea
+                          name="description"
+                          value={newTask.description}
+                          onChange={(e) =>
+                            setNewTask({ ...newTask, description: e.target.value })
+                          }
+                          className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                          rows="3"
+                        />
+                      </div>
+                      {error && (
+                        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-500">
+                          {error}
+                        </div>
+                      )}
+                      <div className="flex justify-end space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => setShowNewTaskModal(false)}
+                          className="rounded-lg border border-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="rounded-lg bg-[#357AFF] px-4 py-2 text-white hover:bg-[#2E69DE]"
+                        >
+                          Create Task
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<MainComponent />, document.getElementById("root"));
+  </script>
+
+  <script>
+    (function() {
+      let activeTab = 'tasks';
+      let user = { name: 'User Name' };
+      let showNewTaskModal = false;
+      let error = null;
+      let newTask = {
+        description: '',
+        cpdProvider: '',
+        createNewAccount: false,
+        providerUsername: '',
+        providerPassword: ''
+      };
+      let tasks = [];
+
+      const sampleProviders = [
+        { value: 'amhlearn', label: 'amhlearn', sampleUsername: '', samplePassword: '' }
+      ];
+
+      window.setActiveTab = function(tab) {
+        console.log(`Setting active tab to: ${tab}`);
+        activeTab = tab;
+        const tabButton = document.getElementById('tasks-tab');
+        if (tabButton) {
+          tabButton.classList.add('bg-[#357AFF]', 'text-white');
+          tabButton.classList.remove('text-gray-700', 'hover:bg-gray-100');
+        } else {
+          console.error('Tasks tab button not found');
+        }
+        const mainTitle = document.getElementById('main-title');
+        if (mainTitle) {
+          mainTitle.textContent = 'Tasks';
+        } else {
+          console.error('Main title element not found');
+        }
+        const newRequestBtn = document.getElementById('new-request-btn');
+        if (newRequestBtn) {
+          newRequestBtn.style.display = 'block';
+          console.log(`New Request button display set to: ${newRequestBtn.style.display}`);
+        } else {
+          console.error('New Request button not found');
+        }
+      };
+
+      window.setShowNewTaskModal = function(show) {
+        console.log(`Setting modal visibility to: ${show}`);
+        showNewTaskModal = show;
+        const modal = document.getElementById('new-task-modal');
+        if (modal) {
+          modal.style.display = show ? 'flex' : 'none';
+          if (show) {
+            setupCheckboxListener(); // Setup listener when modal opens
+          }
+        } else {
+          console.error('New task modal not found');
+        }
+      };
+
+      function updateUI() {
+        console.log('Updating UI');
+        const userName = document.getElementById('user-name');
+        if (userName) {
+          userName.textContent = user?.name || '';
+        }
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) {
+          errorMessage.style.display = error ? 'block' : 'none';
+          errorMessage.textContent = error || '';
+        }
+        const description = document.getElementById('description');
+        if (description) {
+          description.value = newTask.description;
+        }
+        const cpdProvider = document.getElementById('cpd-provider');
+        if (cpdProvider) {
+          cpdProvider.value = newTask.cpdProvider;
+        }
+        const createNewAccount = document.getElementById('create-new-account');
+        if (createNewAccount) {
+          createNewAccount.checked = newTask.createNewAccount;
+        } else {
+          console.error('Create new account checkbox not found');
+        }
+        const providerUsername = document.getElementById('provider-username');
+        if (providerUsername) {
+          providerUsername.value = newTask.providerUsername;
+        }
+        const providerPassword = document.getElementById('provider-password');
+        if (providerPassword) {
+          providerPassword.value = newTask.providerPassword;
+        }
+        const usernameField = document.getElementById('username-field');
+        const passwordField = document.getElementById('password-field');
+        if (usernameField && passwordField) {
+          usernameField.style.display = newTask.createNewAccount ? 'none' : 'block';
+          passwordField.style.display = newTask.createNewAccount ? 'none' : 'block';
+          console.log(`Username field display: ${usernameField.style.display}`);
+          console.log(`Password field display: ${passwordField.style.display}`);
+        } else {
+          console.error('Username or password field not found');
+        }
+        const selectedProvider = sampleProviders.find(p => p.value === newTask.cpdProvider);
+        const sampleUsername = document.getElementById('sample-username');
+        const samplePassword = document.getElementById('sample-password');
+        if (sampleUsername) {
+          sampleUsername.textContent = selectedProvider ? `Sample username: ${selectedProvider.sampleUsername}` : '';
+        }
+        if (samplePassword) {
+          samplePassword.textContent = selectedProvider ? `Sample password: ${selectedProvider.samplePassword}` : '';
+        }
+      }
+
+      function setupCheckboxListener() {
+        const createNewAccount = document.getElementById('create-new-account');
+        if (createNewAccount) {
+          // Remove existing listeners to prevent duplicates
+          createNewAccount.removeEventListener('change', handleCheckboxChange);
+          createNewAccount.addEventListener('change', handleCheckboxChange);
+          console.log('Checkbox listener attached');
+        } else {
+          console.error('Failed to attach checkbox listener: element not found');
+        }
+      }
+
+      function handleCheckboxChange(e) {
+        try {
+          console.log(`Checkbox changed: ${e.target.checked}`);
+          newTask.createNewAccount = e.target.checked;
+          newTask.providerUsername = e.target.checked ? '' : sampleProviders.find(p => p.value === newTask.cpdProvider)?.sampleUsername || '';
+          newTask.providerPassword = e.target.checked ? '' : sampleProviders.find(p => p.value === newTask.cpdProvider)?.samplePassword || '';
+          updateUI();
+        } catch (err) {
+          console.error('Error in checkbox handler:', err);
+        }
+      }
+
+      async function handleNewTask(event) {
+        event.preventDefault();
+        console.log('Handling new task submission');
+        error = null;
+        updateUI();
+
+        if (!newTask.description || !newTask.cpdProvider || (!newTask.createNewAccount && (!newTask.providerUsername || !newTask.providerPassword))) {
+          error = 'Please fill in all required fields';
+          updateUI();
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTask)
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to create request');
+          }
+
+          const newTaskData = await response.json();
+          tasks.push(newTaskData);
+          setShowNewTaskModal(false);
+          newTask = {
+            description: '',
+            cpdProvider: '',
+            createNewAccount: false,
+            providerUsername: '',
+            providerPassword: ''
+          };
+          updateUI();
+        } catch (err) {
+          error = 'Failed to create request. Please try again.';
+          updateUI();
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded');
+        const newTaskForm = document.getElementById('new-task-form');
+        if (newTaskForm) {
+          newTaskForm.addEventListener('submit', handleNewTask);
+        } else {
+          console.error('New task form not found');
+        }
+        const cpdProvider = document.getElementById('cpd-provider');
+        if (cpdProvider) {
+          cpdProvider.addEventListener('change', (e) => {
+            console.log(`CPD provider changed: ${e.target.value}`);
+            const selectedProvider = sampleProviders.find(p => p.value === e.target.value);
+            newTask.cpdProvider = e.target.value;
+            newTask.providerUsername = !newTask.createNewAccount && selectedProvider ? selectedProvider.sampleUsername : '';
+            newTask.providerPassword = !newTask.createNewAccount && selectedProvider ? selectedProvider.samplePassword : '';
+            updateUI();
+          });
+        }
+        const providerUsername = document.getElementById('provider-username');
+        if (providerUsername) {
+          providerUsername.addEventListener('input', (e) => {
+            newTask.providerUsername = e.target.value;
+            updateUI();
+          });
+        }
+        const providerPassword = document.getElementById('provider-password');
+        if (providerPassword) {
+          providerPassword.addEventListener('input', (e) => {
+            newTask.providerPassword = e.target.value;
+            updateUI();
+          });
+        }
+        const description = document.getElementById('description');
+        if (description) {
+          description.addEventListener('input', (e) => {
+            newTask.description = e.target.value;
+            updateUI();
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

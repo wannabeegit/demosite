@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPD Request Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-fixed" style="background-image: url('background.jpg')">
+  <div id="root" class="bg-transparent"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Mock useUser hook
+    const useUser = () => ({
+      data: { name: "John Doe" },
+      loading: false
+    });
+
+    function MainComponent() {
+      const [activeTab, setActiveTab] = useState("overview");
+      const { data: user, loading: userLoading } = useUser();
+      const [tasks, setTasks] = useState([
+        { id: 1, title: "Task 1", description: "Description 1", status: "pending", deadline: "2025-04-20", budget: 500 },
+        { id: 2, title: "Task 2", description: "Description 2", status: "completed", deadline: "2025-04-18", budget: 700, completedDate: "2025-04-17" }
+      ]);
+      const [earnings, setEarnings] = useState(700);
+      const [messages, setMessages] = useState([
+        { id: 1, title: "Message 1", content: "Content 1", date: "2025-04-18", read: false },
+        { id: 2, title: "Message 2", content: "Content 2", date: "2025-04-17", read: true }
+      ]);
+      const [profileData, setProfileData] = useState({
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "+1234567890",
+        skills: "JavaScript, React, CSS"
+      });
+
+      if (userLoading) {
+        return (
+          <div className="flex h-screen items-center justify-center">
+            <div className="text-xl">Loading...</div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="flex flex-col md:flex-row">
+            <nav className="bg-white p-4 md:h-screen md:w-64 md:fixed">
+              <div className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-800">CPD Request</h1>
+                <p className="text-gray-600">{user?.name}</p>
+              </div>
+
+              <div className="space-y-2">
+                <button
+                  onClick={() => setActiveTab("overview")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "overview"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-home mr-2"></i> Overview
+                </button>
+                <button
+                  onClick={() => setActiveTab("tasks")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "tasks"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-tasks mr-2"></i> Tasks
+                </button>
+                <button
+                  onClick={() => setActiveTab("earnings")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "earnings"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-money-bill-wave mr-2"></i> Earnings
+                </button>
+                <button
+                  onClick={() => setActiveTab("messages")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "messages"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-envelope mr-2"></i> Messages
+                </button>
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className={`w-full rounded-lg p-3 text-left ${
+                    activeTab === "settings"
+                      ? "bg-[#357AFF] text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="fas fa-cog mr-2"></i> Settings
+                </button>
+              </div>
+
+              <div className="mt-auto pt-8">
+                <a
+                  href="#"
+                  className="flex items-center text-gray-700 hover:text-[#357AFF]"
+                >
+                  <i className="fas fa-sign-out-alt mr-2"></i> Sign Out
+                </a>
+              </div>
+            </nav>
+
+            <main className="flex-1 p-4 md:ml-64">
+              <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                </h2>
+              </div>
+
+              {activeTab === "overview" && (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="rounded-xl bg-white p-6 shadow-lg">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                      Pending Tasks
+                    </h3>
+                    <p className="text-3xl font-bold text-[#357AFF]">
+                      {tasks.filter((t) => t.status === "pending").length}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-white p-6 shadow-lg">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                      Total Earnings
+                    </h3>
+                    <p className="text-3xl font-bold text-[#357AFF]">
+                      KES {earnings}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-white p-6 shadow-lg">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                      Completed Tasks
+                    </h3>
+                    <p className="text-3xl font-bold text-[#357AFF]">
+                      {tasks.filter((t) => t.status === "completed").length}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "tasks" && (
+                <div className="space-y-4">
+                  {tasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className="rounded-xl bg-white p-6 shadow-lg"
+                    >
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-semibold text-gray-800">
+                          {task.title}
+                        </h3>
+                        <span
+                          className={`rounded-full px-3 py-1 text-sm ${
+                            task.status === "completed"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {task.status}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-gray-600">{task.description}</p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-sm text-gray-500">
+                          Due: {task.deadline}
+                        </span>
+                        <span className="font-semibold text-[#357AFF]">
+                          KES {task.budget}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTab === "earnings" && (
+                <div className="rounded-xl bg-white p-6 shadow-lg">
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      Earnings Overview
+                    </h3>
+                    <p className="text-3xl font-bold text-[#357AFF]">
+                      KES {earnings}
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    {tasks
+                      .filter((t) => t.status === "completed")
+                      .map((task) => (
+                        <div
+                          key={task.id}
+                          className="flex items-center justify-between border-t border-gray-100 py-4"
+                        >
+                          <div>
+                            <h4 className="font-semibold text-gray-800">
+                              {task.title}
+                            </h4>
+                            <p className="text-sm text-gray-500">
+                              Completed: {task.completedDate}
+                            </p>
+                          </div>
+                          <span className="font-semibold text-[#357AFF]">
+                            KES {task.budget}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "messages" && (
+                <div className="rounded-xl bg-white p-6 shadow-lg">
+                  <div className="space-y-4">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className="flex items-start gap-4 border-b border-gray-100 py-4 last:border-0"
+                      >
+                        <div
+                          className={`h-2 w-2 rounded-full ${
+                            message.read ? "bg-gray-300" : "bg-[#357AFF]"
+                          }`}
+                        />
+                        <div>
+                          <h4 className="font-semibold text-gray-800">
+                            {message.title}
+                          </h4>
+                          <p className="text-gray-600">{message.content}</p>
+                          <span className="text-sm text-gray-500">
+                            {message.date}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "settings" && (
+                <div className="rounded-xl bg-white p-6 shadow-lg">
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={profileData.name}
+                        onChange={(e) =>
+                          setProfileData({ ...profileData, name: e.target.value })
+                        }
+                        className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={profileData.email}
+                        onChange={(e) =>
+                          setProfileData({ ...profileData, email: e.target.value })
+                        }
+                        className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={profileData.phone}
+                      onChange={(e) =>
+                        setProfileData({ ...profileData, phone: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Skills
+                    </label>
+                    <textarea
+                      name="skills"
+                      value={profileData.skills}
+                      onChange={(e) =>
+                        setProfileData({ ...profileData, skills: e.target.value })
+                      }
+                      rows="3"
+                      className="mt-1 w-full rounded-lg border border-gray-200 p-2"
+                    />
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log("Profile updated:", profileData);
+                    }}
+                    className="rounded-lg bg-[#357AFF] px-4 py-2 text-white hover:bg-[#2E69DE]"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.render(<MainComponent />, document.getElementById("root"));
+</script>
+</body>
+</html>

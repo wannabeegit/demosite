@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CPD Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-4">Complete Payment</h2>
+    <p class="mb-4">Task ID: <span id="taskId"></span></p>
+    <p class="mb-4">Amount: <span id="amount"></span> KES</p>
+    <button id="payBtn" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Pay with IntaSend</button>
+    <div id="paymentStatus" class="mt-4 text-green-600"></div>
+  </div>
+  <script>
+    // Get params
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get('taskId');
+    const amount = urlParams.get('amount');
+    document.getElementById('taskId').textContent = taskId;
+    document.getElementById('amount').textContent = amount;
+
+    document.getElementById('payBtn').onclick = async function() {
+      // Call your backend to initiate IntaSend payment
+      const response = await fetch('http://localhost:3001/api/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ taskId, amount })
+      });
+      const data = await response.json();
+      if (data.payment_url) {
+        window.location.href = data.payment_url; // Redirect to IntaSend payment page
+      } else {
+        document.getElementById('paymentStatus').textContent = 'Failed to initiate payment.';
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCPD</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .testimonial-slide {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-fixed" style="background-image: url('bg1.jpg')">
+  <!-- Navigation -->
+  <nav class="bg-gray-900/40 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <div class="text-2xl font-bold text-white font-poppins">MediCPD</div>
+        <div class="flex gap-4">
+          <a href="/signin.html" class="px-4 py-2 text-white hover:text-blue-300 transition-colors">Login</a>
+          <a href="/registration.html" class="px-4 py-2 bg-blue-500/80 text-white rounded-lg hover:bg-blue-600/80 transition-colors">Register</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="text-center">
+      <h1 class="text-5xl font-bold text-white mb-6 font-poppins">Streamline Your CPD Requirements</h1>
+      <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+        The ultimate platform for healthcare professionals to manage their Continuing Professional Development needs efficiently and affordably.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a href="/registration.html" class="px-8 py-4 bg-blue-500/80 text-white rounded-lg hover:bg-blue-600/80 transition-colors font-semibold">Get Started</a>
+        <a href="#features" class="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors font-semibold">Learn More</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div id="features" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <h2 class="text-3xl font-bold text-center mb-12 text-white font-poppins">How It Works</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-gray-900/30 backdrop-blur-sm p-6 rounded-xl">
+        <div class="text-blue-300 text-4xl mb-4"><i class="fas fa-file-medical"></i></div>
+        <h3 class="text-xl font-semibold mb-2 text-white">Submit Requests</h3>
+        <p class="text-gray-200">Submit your CPD service requests easily through our platform.</p>
+      </div>
+      <div class="bg-gray-900/30 backdrop-blur-sm p-6 rounded-xl">
+        <div class="text-blue-300 text-4xl mb-4"><i class="fas fa-clock"></i></div>
+        <h3 class="text-xl font-semibold mb-2 text-white">Track Progress</h3>
+        <p class="text-gray-200">Monitor your request status in real-time from submission to completion.</p>
+      </div>
+      <div class="bg-gray-900/30 backdrop-blur-sm p-6 rounded-xl">
+        <div class="text-blue-300 text-4xl mb-4"><i class="fas fa-check-circle"></i></div>
+        <h3 class="text-xl font-semibold mb-2 text-white">Get Certified</h3>
+        <p class="text-gray-200">Receive your completed CPD certification quickly and efficiently.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <h2 class="text-3xl font-bold text-center mb-12 text-white font-poppins">Simple Pricing</h2>
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div class="bg-gray-900/30 backdrop-blur-sm p-8 rounded-xl">
+        <h3 class="text-xl font-semibold mb-4 text-white">Clinical Officers & Nurses</h3>
+        <div class="text-4xl font-bold mb-4 text-blue-300">KES 800</div>
+        <p class="text-gray-200">Per CPD request</p>
+      </div>
+      <div class="bg-gray-900/30 backdrop-blur-sm p-8 rounded-xl">
+        <h3 class="text-xl font-semibold mb-4 text-white">Medical Doctors</h3>
+        <div class="text-4xl font-bold mb-4 text-blue-300">KES 2,000</div>
+        <p class="text-gray-200">Per CPD request</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <h2 class="text-3xl font-bold text-center mb-12 text-white font-poppins">What Our Users Say</h2>
+    <div class="relative bg-gray-900/30 backdrop-blur-sm rounded-xl p-8 max-w-3xl mx-auto">
+      <div id="testimonial-dots" class="flex justify-center mb-4"></div>
+      <div id="testimonial-content" class="text-center">
+        <p id="testimonial-text" class="text-xl italic mb-4 text-gray-200"></p>
+        <div id="testimonial-stars" class="flex justify-center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900/40 backdrop-blur-sm text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">MediCPD</h3>
+          <p class="text-gray-200">Empowering healthcare professionals in their continuous development journey.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#features" class="text-gray-200 hover:text-white transition-colors">Features</a></li>
+            <li><a href="/register" class="text-gray-200 hover:text-white transition-colors">Get Started</a></li>
+            <li><a href="/login" class="text-gray-200 hover:text-white transition-colors">Login</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Contact</h3>
+          <p class="text-gray-200">Questions? Reach out to us at support@medicpd.com</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const testimonials = [
+      { content: "The CPD service has been invaluable for my professional development. The process is smooth and the support is excellent!", rating: 5 },
+      { content: "As a clinical officer, I found this platform extremely helpful in maintaining my CPD requirements. Highly recommended!", rating: 5 },
+      { content: "Quick turnaround times and professional service. This platform has made CPD management so much easier.", rating: 4 }
+    ];
+
+    let currentTestimonial = 0;
+
+    function updateTestimonial() {
+      const testimonialText = document.getElementById('testimonial-text');
+      const testimonialStars = document.getElementById('testimonial-stars');
+      const testimonialDots = document.getElementById('testimonial-dots');
+
+      // Update testimonial content
+      testimonialText.textContent = testimonials[currentTestimonial].content;
+      testimonialText.classList.add('testimonial-slide');
+      setTimeout(() => testimonialText.classList.remove('testimonial-slide'), 500);
+
+      // Update stars
+      testimonialStars.innerHTML = '';
+      for (let i = 0; i < testimonials[currentTestimonial].rating; i++) {
+        testimonialStars.innerHTML += '<i class="fas fa-star text-blue-300"></i>';
+      }
+
+      // Update dots
+      testimonialDots.innerHTML = '';
+      testimonials.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = `w-3 h-3 mx-1 rounded-full ${currentTestimonial === index ? 'bg-blue-300' : 'bg-gray-600'}`;
+        dot.addEventListener('click', () => {
+          currentTestimonial = index;
+          updateTestimonial();
+        });
+        testimonialDots.appendChild(dot);
+      });
+    }
+
+    // Initial render
+    updateTestimonial();
+
+    // Auto-rotate testimonials every 5 seconds
+    const timer = setInterval(() => {
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+      updateTestimonial();
+    }, 5000);
+
+    // Cleanup interval on page unload
+    window.addEventListener('unload', () => clearInterval(timer));
+  </script>
+</body>
+</html>
